@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Majeo Restaurant</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="topbar">
+    <div class="brand"><a href="index.html">Majeo</a></div>
+    <div class="links">
+      <a href="categorie-plats.html">Menu</a>
+      <a href="categorie-boissons.html">Boissons</a>
+      <a href="#" id="logout-link" style="display:none;">Se déconnecter</a>
+    </div>
+  </nav>
+
+  <div id="login-view" class="login-box">
+    <h2>Connexion admin</h2>
+    <form id="login-form">
+      <label for="email">Email</label>
+      <input type="email" id="email" required>
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" required>
+      <button type="submit" class="btn-primary">Se connecter</button>
+      <p class="error-msg" id="login-error"></p>
+    </form>
+  </div>
+
+  <div id="dashboard-view" class="admin-wrap" style="display:none;">
+    <div class="admin-header">
+      <h1 style="font-size:1.6rem;">Gestion du contenu</h1>
+      <div class="tabs">
+        <button type="button" id="tab-plats" class="tab-btn active" onclick="switchTable('plats')">Plats</button>
+        <button type="button" id="tab-boissons" class="tab-btn" onclick="switchTable('boissons')">Boissons</button>
+      </div>
+    </div>
+
+    <form id="dish-form" class="dish-form">
+      <input type="hidden" id="dish-id">
+      <div>
+        <label for="dish-nom">Nom</label>
+        <input type="text" id="dish-nom" required>
+      </div>
+      <div>
+        <label for="dish-prix">Prix</label>
+        <input type="text" id="dish-prix" placeholder="3 500 FCFA" required>
+      </div>
+      <div>
+        <label for="dish-categorie">Catégorie</label>
+        <input type="text" id="dish-categorie" list="categorie-options" placeholder="Petits Déjeuners" required>
+        <datalist id="categorie-options"></datalist>
+      </div>
+      <button type="submit" class="btn-primary" id="dish-submit-btn">Ajouter</button>
+    </form>
+    <p class="error-msg" id="dish-error"></p>
+
+    <table class="dish-table">
+      <thead>
+        <tr><th>Nom</th><th>Catégorie</th><th>Prix</th><th></th></tr>
+      </thead>
+      <tbody id="dish-table-body"></tbody>
+    </table>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

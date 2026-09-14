@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu — Majeo Restaurant</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-table="plats" data-back="categorie-plats.html">
+  <nav class="topbar">
+    <div class="brand"><a href="index.html">Majeo</a></div>
+    <div class="links">
+      <a href="categorie-plats.html">Menu</a>
+      <a href="categorie-boissons.html">Boissons</a>
+      <a href="admin.html">Admin</a>
+    </div>
+  </nav>
+
+  <a class="back-link" href="categorie-plats.html" style="margin-top: 1.5rem;">← Retour aux catégories</a>
+
+  <div class="menu-header">
+    <h1 id="category-title" class="display" style="font-size: 1.9rem;">…</h1>
+  </div>
+
+  <div id="menu-list" class="menu-list"></div>
+
+  <footer class="site-footer">Majeo Restaurant</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

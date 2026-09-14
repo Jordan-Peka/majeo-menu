@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --charcoal: #1C1A16;
+  --parchment: #EFE6D2;
+  --parchment-dim: #E4D8BC;
+  --gold: #C79A2E;
+  --brick: #8B3A2B;
+  --ink: #241F19;
+  --ink-soft: #55503F;
+  --radius: 3px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: 'Work Sans', sans-serif;
+  line-height: 1.5;
+}
+
+h1, h2, h3, .display {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* --- Navigation --- */
+nav.topbar {
+  background: var(--charcoal);
+  color: var(--parchment);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.75rem;
+}
+
+nav.topbar .brand {
+  font-family: 'Fraunces', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+nav.topbar .links { display: flex; gap: 1.75rem; font-size: 0.92rem; }
+nav.topbar .links a { opacity: 0.82; transition: opacity 0.15s; }
+nav.topbar .links a:hover, nav.topbar .links a:focus-visible { opacity: 1; }
+
+/* --- Hero --- */
+.hero {
+  padding: 4.5rem 1.75rem 3.5rem;
+  max-width: 760px;
+}
+.hero h1 { font-size: clamp(2.1rem, 5vw, 3.1rem); line-height: 1.08; }
+.hero p { color: var(--ink-soft); font-size: 1.05rem; margin-top: 1rem; max-width: 46ch; }
+
+.cta {
+  display: inline-block;
+  margin-top: 1.75rem;
+  background: var(--brick);
+  color: var(--parchment);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+.cta:hover { background: #712c20; }
+
+/* --- Grille de catégories --- */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  margin: 0 1.75rem 3rem;
+}
+
+.category-card {
+  background: var(--parchment);
+  padding: 1.75rem 1.5rem;
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: background 0.15s;
+}
+.category-card:hover { background: var(--parchment-dim); }
+.category-card .name { font-family: 'Fraunces', serif; font-size: 1.15rem; }
+.category-card .count { color: var(--ink-soft); font-size: 0.85rem; margin-top: 0.4rem; }
+.category-card .arrow { align-self: flex-end; color: var(--gold); font-size: 1.3rem; }
+
+/* --- Liste de plats (menu.html) --- */
+.menu-header {
+  padding: 3rem 1.75rem 1rem;
+  max-width: 760px;
+}
+.menu-list { max-width: 760px; margin: 0 auto 4rem; padding: 0 1.75rem; }
+
+.dish-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 1.05rem 0;
+  border-bottom: 1px solid rgba(36,31,25,0.12);
+}
+.dish-row .name { font-size: 1.05rem; }
+.dish-row .leader {
+  flex: 1;
+  border-bottom: 2px dotted rgba(36,31,25,0.28);
+  transform: translateY(-4px);
+}
+.dish-row .price {
+  font-weight: 600;
+  color: var(--brick);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.back-link { padding: 0 1.75rem; display: block; margin-bottom: 2rem; color: var(--ink-soft); font-size: 0.9rem; }
+.back-link:hover { color: var(--ink); }
+
+.empty-state { color: var(--ink-soft); font-style: italic; padding: 0 1.75rem 3rem; }
+
+/* --- Admin --- */
+.admin-wrap { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.75rem 4rem; }
+
+.login-box {
+  max-width: 360px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: white;
+  border: 1px solid rgba(36,31,25,0.15);
+  border-radius: var(--radius);
+}
+.login-box h2 { margin-bottom: 1.5rem; }
+
+label { display: block; font-size: 0.85rem; color: var(--ink-soft); margin: 0.9rem 0 0.3rem; }
+input, select {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid rgba(36,31,25,0.25);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 0.95rem;
+  background: white;
+}
+input:focus, select:focus, .cta:focus-visible, button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.btn-primary { background: var(--brick); color: var(--parchment); padding: 0.7rem 1.3rem; margin-top: 1.3rem; }
+.btn-primary:hover { background: #712c20; }
+.btn-ghost { background: transparent; color: var(--ink-soft); padding: 0.4rem 0.7rem; border: 1px solid rgba(36,31,25,0.25); }
+.btn-ghost:hover { color: var(--ink); }
+.btn-danger { background: transparent; color: var(--brick); padding: 0.4rem 0.7rem; border: 1px solid rgba(139,58,43,0.4); }
+
+.error-msg { color: var(--brick); font-size: 0.85rem; margin-top: 0.6rem; min-height: 1.1em; }
+
+.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem; }
+
+.tabs { display: flex; gap: 0.5rem; }
+.tab-btn {
+  background: white;
+  color: var(--ink-soft);
+  padding: 0.55rem 1.1rem;
+  border: 1px solid rgba(36,31,25,0.2);
+}
+.tab-btn.active { background: var(--charcoal); color: var(--parchment); border-color: var(--charcoal); }
+
+.dish-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.4fr auto;
+  gap: 0.8rem;
+  align-items: end;
+  background: white;
+  padding: 1.25rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(36,31,25,0.15);
+  margin-bottom: 2rem;
+}
+.dish-form label { margin-top: 0; }
+
+table.dish-table { width: 100%; border-collapse: collapse; background: white; }
+table.dish-table th, table.dish-table td {
+  text-align: left;
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid rgba(36,31,25,0.1);
+  font-size: 0.92rem;
+}
+table.dish-table th { color: var(--ink-soft); font-weight: 500; font-size: 0.8rem; }
+table.dish-table td.actions { display: flex; gap: 0.5rem; }
+
+footer.site-footer { text-align: center; padding: 2rem; color: var(--ink-soft); font-size: 0.8rem; }
+
+@media (max-width: 620px) {
+  .dish-form { grid-template-columns: 1fr; }
+  nav.topbar .links { gap: 1rem; font-size: 0.85rem; }
+}
