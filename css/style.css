@@ -1,6 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap');
 
 :root {
+  /* --- palette d'origine : utilisée partout sauf header/hero/cartes catégories --- */
   --charcoal: #1C1A16;
   --parchment: #EFE6D2;
   --parchment-dim: #E4D8BC;
@@ -9,6 +10,17 @@
   --ink: #241F19;
   --ink-soft: #55503F;
   --radius: 3px;
+
+  /* --- identité Majeo (bleu marine) : header, hero, cartes catégories --- */
+  --navy: #16357f;
+  --navy-dark: #0d2a6b;
+  --navy-light: #2a55b8;
+  --navy-muted: #57628a;
+  --white: #ffffff;
+  --radius-pill: 999px;
+
+  /* --- mise en page, commune à toutes les pages --- */
+  --page-width: 1200px;
 }
 
 * { box-sizing: border-box; }
@@ -30,10 +42,25 @@ h1, h2, h3, .display {
 
 a { color: inherit; text-decoration: none; }
 
-/* --- Navigation --- */
+/* ==========================================================
+   Conteneur centré partagé — mise en page uniquement,
+   ne touche à aucune couleur ni page déjà en place.
+   ========================================================== */
+nav.topbar,
+.hero,
+.menu-header,
+.back-link,
+.empty-state {
+  max-width: var(--page-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- Navigation (identité Majeo, commune à toutes les pages) --- */
 nav.topbar {
-  background: var(--charcoal);
-  color: var(--parchment);
+  background: var(--white);
+  color: var(--navy);
+  border-top: 3px solid var(--navy-dark);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -42,58 +69,110 @@ nav.topbar {
 
 nav.topbar .brand {
   font-family: 'Fraunces', serif;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.02em;
 }
 
-nav.topbar .links { display: flex; gap: 1.75rem; font-size: 0.92rem; }
-nav.topbar .links a { opacity: 0.82; transition: opacity 0.15s; }
+nav.topbar .links { display: flex; align-items: center; gap: 1.75rem; font-size: 0.92rem; }
+nav.topbar .links a { color: var(--ink); opacity: 0.85; transition: opacity 0.15s; }
 nav.topbar .links a:hover, nav.topbar .links a:focus-visible { opacity: 1; }
 
-/* --- Hero --- */
+/* dernier lien = bouton pilule, comme "Accueil" dans la maquette */
+nav.topbar .links a:last-child {
+  background: var(--navy-dark);
+  color: var(--white);
+  padding: 0.55rem 1.3rem;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  opacity: 1;
+}
+nav.topbar .links a:last-child:hover { background: var(--navy); }
+
+/* --- Hero (page d'accueil) --- */
 .hero {
   padding: 4.5rem 1.75rem 3.5rem;
   max-width: 760px;
 }
-.hero h1 { font-size: clamp(2.1rem, 5vw, 3.1rem); line-height: 1.08; }
-.hero p { color: var(--ink-soft); font-size: 1.05rem; margin-top: 1rem; max-width: 46ch; }
+.hero h1 { font-size: clamp(2.1rem, 5vw, 3.1rem); line-height: 1.1; color: var(--navy); font-weight: 600; }
+.hero p { color: var(--navy-muted); font-size: 1.05rem; margin-top: 1rem; max-width: 46ch; }
+.hero p strong { color: var(--navy); font-weight: 600; }
 
 .cta {
   display: inline-block;
   margin-top: 1.75rem;
-  background: var(--brick);
-  color: var(--parchment);
+  background: var(--navy-dark);
+  color: var(--white);
   padding: 0.75rem 1.5rem;
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 600;
   transition: background 0.15s;
 }
-.cta:hover { background: #712c20; }
+.cta:hover { background: var(--navy); }
+.cta:focus-visible { outline: 2px solid var(--navy-light); outline-offset: 1px; }
 
-/* --- Grille de catégories --- */
+/* --- Grille de catégories (page d'accueil) --- */
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1px;
-  background: var(--ink);
-  border: 1px solid var(--ink);
-  margin: 0 1.75rem 3rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 300px));
+  gap: 1.25rem;
+  max-width: var(--page-width);
+  margin: 2rem auto 3.5rem;
+  padding: 0 1.75rem;
 }
 
 .category-card {
-  background: var(--parchment);
-  padding: 1.75rem 1.5rem;
-  min-height: 130px;
+  position: relative;
+  aspect-ratio: 4 / 3.6;
+  border-radius: 14px;
+  overflow: hidden;
+  padding: 1.4rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  transition: background 0.15s;
+  justify-content: flex-end;
+  background: var(--navy-dark) center/cover no-repeat;
+  color: var(--white);
+  transition: transform 0.2s ease;
 }
-.category-card:hover { background: var(--parchment-dim); }
-.category-card .name { font-family: 'Fraunces', serif; font-size: 1.15rem; }
-.category-card .count { color: var(--ink-soft); font-size: 0.85rem; margin-top: 0.4rem; }
-.category-card .arrow { align-self: flex-end; color: var(--gold); font-size: 1.3rem; }
+
+.category-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15,25,60,0) 40%, rgba(10,18,45,0.82) 100%);
+  z-index: 0;
+}
+
+.category-card:hover { transform: translateY(-2px); }
+
+.category-card .name,
+.category-card .count,
+.category-card .arrow {
+  position: relative;
+  z-index: 1;
+}
+
+.category-card .name { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 700; color: var(--white); }
+.category-card .count { color: #dfe4f5; font-size: 0.85rem; margin-top: 0.35rem; max-width: 22ch; }
+
+.category-card .arrow {
+  align-self: flex-start;
+  margin-top: 1rem;
+  background: var(--navy-dark);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.55rem 1.2rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
+/* ==========================================================
+   Tout ce qui suit = style d'ORIGINE, non retouché
+   (liste de plats, admin, formulaires, tableaux, footer...)
+   ========================================================== */
 
 /* --- Liste de plats (menu.html) --- */
 .menu-header {
@@ -150,7 +229,7 @@ input, select {
   font-size: 0.95rem;
   background: white;
 }
-input:focus, select:focus, .cta:focus-visible, button:focus-visible {
+input:focus, select:focus, button:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 1px;
 }
@@ -207,7 +286,16 @@ table.dish-table td.actions { display: flex; gap: 0.5rem; }
 
 footer.site-footer { text-align: center; padding: 2rem; color: var(--ink-soft); font-size: 0.8rem; }
 
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  nav.topbar, .hero, .menu-header, .menu-list, .category-grid, .back-link, .empty-state, .admin-wrap {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+}
+
 @media (max-width: 620px) {
   .dish-form { grid-template-columns: 1fr; }
   nav.topbar .links { gap: 1rem; font-size: 0.85rem; }
+  .category-grid { grid-template-columns: 1fr; }
 }
