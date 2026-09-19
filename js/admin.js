@@ -2,8 +2,9 @@ const loginView = document.getElementById("login-view");
 const dashboardView = document.getElementById("dashboard-view");
 const logoutLink = document.getElementById("logout-link");
 
-let currentTable = "plats"; // "plats" ou "boissons"
+let currentTable = "plats";
 let allDishes = [];
+let allCategories = [];
 
 async function checkSession() {
   const { data: { session } } = await supabaseClient.auth.getSession();
@@ -24,17 +25,38 @@ function showDashboard() {
   loginView.style.display = "none";
   dashboardView.style.display = "block";
   logoutLink.style.display = "inline";
+  loadCategories();
   loadDishes();
 }
 
-// --- Bascule entre la table "plats" et la table "boissons" ---
+function setActiveTab(tab) {
+  const isCategoriesTab = tab === "categories";
+  const tabPlats = document.getElementById("tab-plats");
+  const tabBoissons = document.getElementById("tab-boissons");
+  const tabCategories = document.getElementById("tab-categories");
+  const dishModule = document.getElementById("dish-module");
+  const categoriesModule = document.getElementById("categories-module");
+
+  tabPlats.classList.toggle("active", currentTable === "plats" && !isCategoriesTab);
+  tabBoissons.classList.toggle("active", currentTable === "boissons" && !isCategoriesTab);
+  tabCategories.classList.toggle("active", isCategoriesTab);
+
+  dishModule.style.display = isCategoriesTab ? "none" : "block";
+  categoriesModule.style.display = isCategoriesTab ? "block" : "none";
+}
+
 function switchTable(table) {
   currentTable = table;
-  document.getElementById("tab-plats").classList.toggle("active", table === "plats");
-  document.getElementById("tab-boissons").classList.toggle("active", table === "boissons");
+  setActiveTab("dishes");
   document.getElementById("dish-nom").placeholder = table === "boissons" ? "Vin Rouge Bordeaux" : "";
   resetForm();
+  loadCategories();
   loadDishes();
+}
+
+function switchCategoriesTab() {
+  setActiveTab("categories");
+  loadCategories();
 }
 
 // --- Connexion / déconnexion ---
@@ -59,11 +81,27 @@ logoutLink.addEventListener("click", async (e) => {
   showLogin();
 });
 
-// --- Chargement + affichage ---
+async function loadCategories() {
+  const { data, error } = await supabaseClient
+    .from("categories")
+    .select("id, nom, type, ordre")
+    .eq("type", currentTable)
+    .order("ordre", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  allCategories = data || [];
+  renderCategoryOptions();
+  renderCategoryOrderTable();
+}
+
 async function loadDishes() {
   const { data, error } = await supabaseClient
     .from(currentTable)
-    .select("id, nom, prix, categorie")
+    .select("id, nom, prix, categorie, categorie_id")
     .order("categorie", { ascending: true })
     .order("nom", { ascending: true });
 
@@ -74,7 +112,6 @@ async function loadDishes() {
 
   allDishes = data || [];
   renderTable();
-  renderCategoryOptions();
 }
 
 function renderTable() {
@@ -88,7 +125,7 @@ function renderTable() {
       (d) => `
       <tr>
         <td>${d.nom}</td>
-        <td>${d.categorie}</td>
+        <td>${d.categorie || "-"}</td>
         <td>${d.prix}</td>
         <td class="actions">
           <button class="btn-ghost" onclick="editDish('${d.id}')">Modifier</button>
@@ -100,9 +137,72 @@ function renderTable() {
 }
 
 function renderCategoryOptions() {
-  const datalist = document.getElementById("categorie-options");
-  const categories = [...new Set(allDishes.map((d) => d.categorie))];
-  datalist.innerHTML = categories.map((c) => `<option value="${c}">`).join("");
+  const select = document.getElementById("dish-categorie-select");
+  if (!select) return;
+
+  if (!allCategories.length) {
+    select.innerHTML = '<option value="">Aucune catégorie</option>';
+    select.disabled = true;
+    return;
+  }
+
+  select.disabled = false;
+  select.innerHTML = allCategories
+    .map((category) => `<option value="${category.id}">${category.nom}</option>`)
+    .join("");
+
+  const currentCategoryField = document.getElementById("dish-categorie");
+  if (currentCategoryField.value) {
+    const match = allCategories.find((category) => category.nom === currentCategoryField.value);
+    if (match) {
+      select.value = match.id;
+    }
+  }
+}
+
+function renderCategoryOrderTable() {
+  const body = document.getElementById("category-order-body");
+  if (!body) return;
+
+  if (!allCategories.length) {
+    body.innerHTML = '<tr><td colspan="3">Aucune catégorie pour ce type.</td></tr>';
+    return;
+  }
+
+  body.innerHTML = allCategories
+    .map(
+      (category) => `
+      <tr>
+        <td>${category.nom}</td>
+        <td>
+          <input type="number" min="0" step="10" value="${category.ordre ?? 999}" data-category-id="${category.id}">
+        </td>
+        <td>
+          <button type="button" class="btn-ghost" data-save-category="${category.id}">Enregistrer</button>
+        </td>
+      </tr>`
+    )
+    .join("");
+}
+
+async function saveCategoryOrder(categoryId) {
+  const input = document.querySelector(`input[data-category-id="${categoryId}"]`);
+  if (!input) return;
+
+  const ordre = Number(input.value);
+  if (!Number.isFinite(ordre)) return;
+
+  const { error } = await supabaseClient
+    .from("categories")
+    .update({ ordre })
+    .eq("id", categoryId);
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  loadCategories();
 }
 
 // --- Ajout / modification ---
@@ -115,10 +215,15 @@ dishForm.addEventListener("submit", async (e) => {
   errorEl.textContent = "";
 
   const id = document.getElementById("dish-id").value;
+  const selectedCategoryId = document.getElementById("dish-categorie-select").value;
+  const selectedCategory = allCategories.find((category) => category.id === selectedCategoryId);
+  const categoryName = selectedCategory ? selectedCategory.nom : document.getElementById("dish-categorie").value.trim();
+
   const payload = {
     nom: document.getElementById("dish-nom").value.trim(),
     prix: document.getElementById("dish-prix").value.trim(),
-    categorie: document.getElementById("dish-categorie").value.trim(),
+    categorie: categoryName,
+    categorie_id: selectedCategoryId || null,
   };
 
   const query = id
@@ -133,6 +238,7 @@ dishForm.addEventListener("submit", async (e) => {
   }
 
   resetForm();
+  loadCategories();
   loadDishes();
 });
 
@@ -142,7 +248,12 @@ function editDish(id) {
   document.getElementById("dish-id").value = dish.id;
   document.getElementById("dish-nom").value = dish.nom;
   document.getElementById("dish-prix").value = dish.prix;
-  document.getElementById("dish-categorie").value = dish.categorie;
+  document.getElementById("dish-categorie").value = dish.categorie || "";
+
+  const match = allCategories.find((category) => category.id === dish.categorie_id || category.nom === dish.categorie);
+  const categorySelect = document.getElementById("dish-categorie-select");
+  categorySelect.value = match ? match.id : "";
+
   submitBtn.textContent = "Enregistrer";
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -154,13 +265,25 @@ async function deleteDish(id) {
     console.error(error);
     return;
   }
+  loadCategories();
   loadDishes();
 }
 
 function resetForm() {
   dishForm.reset();
   document.getElementById("dish-id").value = "";
+  document.getElementById("dish-categorie").value = "";
+  const select = document.getElementById("dish-categorie-select");
+  if (select && allCategories.length) {
+    select.value = allCategories[0].id;
+  }
   submitBtn.textContent = "Ajouter";
 }
+
+document.addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-save-category]");
+  if (!button) return;
+  await saveCategoryOrder(button.dataset.saveCategory);
+});
 
 checkSession();

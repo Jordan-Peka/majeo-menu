@@ -36,34 +36,46 @@
       <div class="tabs">
         <button type="button" id="tab-plats" class="tab-btn active" onclick="switchTable('plats')">Plats</button>
         <button type="button" id="tab-boissons" class="tab-btn" onclick="switchTable('boissons')">Boissons</button>
+        <button type="button" id="tab-categories" class="tab-btn" onclick="switchCategoriesTab()">Catégories</button>
       </div>
     </div>
 
-    <form id="dish-form" class="dish-form">
-      <input type="hidden" id="dish-id">
-      <div>
-        <label for="dish-nom">Nom</label>
-        <input type="text" id="dish-nom" required>
-      </div>
-      <div>
-        <label for="dish-prix">Prix</label>
-        <input type="text" id="dish-prix" placeholder="3 500 FCFA" required>
-      </div>
-      <div>
-        <label for="dish-categorie">Catégorie</label>
-        <input type="text" id="dish-categorie" list="categorie-options" placeholder="Petits Déjeuners" required>
-        <datalist id="categorie-options"></datalist>
-      </div>
-      <button type="submit" class="btn-primary" id="dish-submit-btn">Ajouter</button>
-    </form>
-    <p class="error-msg" id="dish-error"></p>
+    <div id="dish-module">
+      <form id="dish-form" class="dish-form">
+        <input type="hidden" id="dish-id">
+        <div>
+          <label for="dish-nom">Nom</label>
+          <input type="text" id="dish-nom" required>
+        </div>
+        <div>
+          <label for="dish-prix">Prix</label>
+          <input type="text" id="dish-prix" placeholder="3 500 FCFA" required>
+        </div>
+        <div>
+          <label for="dish-categorie-select">Catégorie</label>
+          <select id="dish-categorie-select" required></select>
+          <input type="hidden" id="dish-categorie">
+        </div>
+        <button type="submit" class="btn-primary" id="dish-submit-btn">Ajouter</button>
+      </form>
+      <p class="error-msg" id="dish-error"></p>
 
-    <table class="dish-table">
-      <thead>
-        <tr><th>Nom</th><th>Catégorie</th><th>Prix</th><th></th></tr>
-      </thead>
-      <tbody id="dish-table-body"></tbody>
-    </table>
+      <table class="dish-table">
+        <thead>
+          <tr><th>Nom</th><th>Catégorie</th><th>Prix</th><th></th></tr>
+        </thead>
+        <tbody id="dish-table-body"></tbody>
+      </table>
+    </div>
+
+    <div id="categories-module" style="display:none;">
+      <table class="dish-table">
+        <thead>
+          <tr><th>Catégorie</th><th>Ordre</th><th></th></tr>
+        </thead>
+        <tbody id="category-order-body"></tbody>
+      </table>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

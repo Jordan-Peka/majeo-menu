@@ -1,6 +1,17 @@
 // Ces deux fonctions marchent pour n'importe quelle table (plats OU boissons) :
 // la table à interroger est lue depuis l'attribut data-table du <body>.
 
+function getNestedCount(row, tableName) {
+  const nested = row?.[tableName];
+  if (Array.isArray(nested)) {
+    return Number(nested[0]?.count ?? 0);
+  }
+  if (nested && typeof nested === "object") {
+    return Number(nested.count ?? 0);
+  }
+  return 0;
+}
+
 // --- Pages catégorie-plats.html / catégorie-boissons.html ---
 async function renderCategories() {
   const grid = document.getElementById("category-grid");
@@ -9,7 +20,11 @@ async function renderCategories() {
   const table = document.body.dataset.table;
   const target = document.body.dataset.target;
 
-  const { data, error } = await supabaseClient.from(table).select("categorie");
+  const { data, error } = await supabaseClient
+    .from("categories")
+    .select(`id, nom, ordre, ${table}(count)`)
+    .eq("type", table)
+    .order("ordre", { ascending: true });
 
   if (error) {
     grid.innerHTML = `<p class="empty-state">Impossible de charger les catégories pour le moment.</p>`;
@@ -17,30 +32,28 @@ async function renderCategories() {
     return;
   }
 
-  if (!data || data.length === 0) {
+  const categories = (data || []).map((category) => ({
+    ...category,
+    count: getNestedCount(category, table),
+  }));
+
+  if (!categories.length) {
     grid.innerHTML = `<p class="empty-state">Rien n'a encore été ajouté ici. Rendez-vous sur la page Admin pour commencer.</p>`;
     return;
   }
 
-  const counts = {};
-  data.forEach((row) => {
-    counts[row.categorie] = (counts[row.categorie] || 0) + 1;
-  });
-
-  const categories = Object.keys(counts).sort((a, b) => a.localeCompare(b, "fr"));
-
   const cardsMarkup = categories
-    .map((cat) => {
-      const slug = slugify(cat);
-      const n = counts[cat];
+    .map((category) => {
+      const slug = slugify(category.nom);
+      const n = category.count;
       return `
         <a class="category-card" href="${target}?cat=${encodeURIComponent(slug)}">
-          <span class="name">${cat}</span>
+          <span class="name">${category.nom}</span>
           <span class="count">${n} article${n > 1 ? "s" : ""}</span>
           <span class="category-icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-            </svg>
+          <svg data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+          </svg>
           </span>
         </a>`;
     })
@@ -102,6 +115,19 @@ async function renderMenu() {
       <a class="menu-return" href="${backLink}">
         <span>Retour page précédente</span>
       </a>`;
+
+  const backButton = list.querySelector(".menu-return");
+  if (backButton) {
+    backButton.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "/";
+      }
+    });
+  }
 }
 
 renderCategories();

@@ -6,7 +6,7 @@
   <title>Carte des Boissons — Majeo Restaurant</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-table="boissons" data-target="boisson-menu.html">
+<body class="category-page" data-table="boissons" data-target="boisson-menu.html">
   <nav class="topbar">
     <div><img class="logo" src="/img/logo/logo-bleu.png" alt="logo-majeo"></div>
     <div class="links">
@@ -17,14 +17,13 @@
     <button class="menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span></button>
   </nav>
 
-  <div class="hero" style="padding-bottom: 1.5rem;">
-    <h1 style="font-size: 2rem;">Carte des Boissons</h1>
-    <p>Choisissez une catégorie pour voir les boissons disponibles.</p>
+  <div class="hero">
+    <h1>Carte des boissons</h1>
   </div>
 
   <div id="category-grid" class="category-grid"></div>
 
-  <footer class="site-footer">Majeo Restaurant</footer>
+  <footer class="site-footer"></footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js"></script>
