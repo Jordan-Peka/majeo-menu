@@ -29,7 +29,7 @@ async function renderCategories() {
 
   const categories = Object.keys(counts).sort((a, b) => a.localeCompare(b, "fr"));
 
-  grid.innerHTML = categories
+  const cardsMarkup = categories
     .map((cat) => {
       const slug = slugify(cat);
       const n = counts[cat];
@@ -37,10 +37,19 @@ async function renderCategories() {
         <a class="category-card" href="${target}?cat=${encodeURIComponent(slug)}">
           <span class="name">${cat}</span>
           <span class="count">${n} article${n > 1 ? "s" : ""}</span>
-          <span class="arrow">→</span>
+          <span class="category-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </span>
         </a>`;
     })
     .join("");
+
+  grid.innerHTML = `${cardsMarkup}
+    <a class="menu-return" href="index.html">
+      <span>Retour à l'accueil</span>
+    </a>`;
 }
 
 // --- Pages menu.html / boisson-menu.html ---
@@ -78,6 +87,8 @@ async function renderMenu() {
     return;
   }
 
+  const backLink = document.body.dataset.back || "categorie-plats.html";
+
   list.innerHTML = items
     .map(
       (d) => `
@@ -87,7 +98,10 @@ async function renderMenu() {
         <span class="price">${d.prix}</span>
       </div>`
     )
-    .join("");
+    .join("") + `
+      <a class="menu-return" href="${backLink}">
+        <span>Retour page précédente</span>
+      </a>`;
 }
 
 renderCategories();

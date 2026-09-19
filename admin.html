@@ -8,12 +8,14 @@
 </head>
 <body>
   <nav class="topbar">
-    <div class="brand"><a href="index.html">Majeo</a></div>
+    <div><img class="logo" src="/img/logo/logo-bleu.png" alt="logo-majeo"></div>
     <div class="links">
       <a href="categorie-plats.html">Menu</a>
-      <a href="categorie-boissons.html">Boissons</a>
+      <a href="categorie-boissons.html">Carte des boissons</a>
+      <a class="active" href="index.html">Accueil</a>
       <a href="#" id="logout-link" style="display:none;">Se déconnecter</a>
     </div>
+    <button class="menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false"><span></span><span></span></button>
   </nav>
 
   <div id="login-view" class="login-box">
@@ -67,5 +69,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js"></script>
   <script src="js/admin.js"></script>
+  <script src="js/nav.js"></script>
 </body>
 </html>

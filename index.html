@@ -3,37 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Majeo Restaurant</title>
+  <title>MAJEO RESTAURANT MENU</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="homepage">
   <nav class="topbar">
     <div><img class="logo" src="/img/logo/logo-bleu.png" alt="logo-majeo"></div>
     <div class="links">
       <a href="categorie-plats.html">Menu</a>
-      <a href="categorie-boissons.html">Boissons</a>
-      <a href="admin.html">Admin</a>
+      <a href="categorie-boissons.html">Carte des boissons</a>
+      <a class="active" href="index.html">Accueil</a>
     </div>
+    <button class="menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+    </button>
   </nav>
 
   <section class="hero">
-    <h1>La carte, toujours à jour.</h1>
-    <p>Parcourez nos plats et nos boissons par catégorie. Les prix affichés ici sont ceux du jour.</p>
-  </section>
-
-  <div class="category-grid" style="margin-top: 0;">
+    <h1>Bienvenue dans notre univers.</h1>
+    <p>Découvrez notre sélection de <strong>plats et de boissons</strong>. Veillez effectuer un choix.</p>
+    <div class="category-grid">
     <a class="category-card" href="categorie-plats.html" style="background-image:url('https://framerusercontent.com/images/2V95fWhHhNwHVZXLiyD8EZHI2E.jpg?width=800&height=516')">
       <span class="name">Carte Menu</span>
-      <span class="count">Petits déjeuners, grillades, poissons…</span>
+      <span class="count">Créations De Saison, Accords Subtils Et Produits Nobles Sublimés</span>
       <span class="arrow">Découvrir</span>
     </a>
     <a class="category-card" href="categorie-boissons.html" style="background-image:url('https://framerusercontent.com/images/WIODolZu4mGkxVQT92E17E0Okc.jpg?width=795&height=385')">
-      <span class="name">Carte des Boissons</span>
-      <span class="count">Vins, cocktails, jus, sodas…</span>
+      <span class="name">Carte Des Boissons</span>
+      <span class="count">Créations De Saison, Accords Subtils Et Produits Nobles Sublimés</span>
       <span class="arrow">Découvrir</span>
     </a>
   </div>
 
-  <footer class="site-footer">Majeo Restaurant</footer>
+  </section>
+
+  <footer class="site-footer"></footer>
+
+  <script src="js/nav.js"></script>
 </body>
 </html>
