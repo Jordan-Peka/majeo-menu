@@ -650,7 +650,7 @@ footer.site-footer { text-align: center; padding: 2rem; color: var(--ink-soft); 
 .category-page .hero {
   width: min(552px, calc(100% - 2rem));
   max-width: 552px;
-  padding: 3.5rem 0 2rem;
+  padding: 0rem 0 2rem;
 }
 
 .category-page .hero h1 {
