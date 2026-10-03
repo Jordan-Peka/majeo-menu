@@ -78,7 +78,7 @@ nav.topbar {
   box-shadow: 0 2px 10px rgba(22, 53, 127, 0.08);
 }
 
-body { padding-top: 140px; }
+body { padding-top: 75px; }
 html, body { overflow-x: hidden; }
 html.menu-open { overflow: hidden; }
 html { scrollbar-width: none; }
