@@ -93,28 +93,67 @@ async function renderMenu() {
   }
 
   const items = (data || []).filter((row) => slugify(row.categorie) === slug);
-  titleEl.textContent = items.length > 0 ? items[0].categorie : slug.replace(/-/g, " ");
-
-  if (items.length === 0) {
-    list.innerHTML = `<p class="empty-state">Rien dans cette catégorie pour le moment.</p>`;
-    return;
-  }
+  const isBreakfastCategory = slug === "nos-petits-dejeuners";
+  titleEl.textContent = isBreakfastCategory
+    ? "Nos Petits Déjeuners"
+    : items.length > 0
+      ? items[0].categorie
+      : slug.replace(/-/g, " ");
+  document.body.classList.toggle("breakfast-page", isBreakfastCategory);
 
   const backLink = document.body.dataset.back || "categorie-plats.html";
 
-  list.innerHTML = items
-    .map(
-      (d) => `
-      <div class="dish-row">
-        <span class="name">${d.nom}</span>
-        <span class="leader"></span>
-        <span class="price">${d.prix}</span>
-      </div>`
-    )
-    .join("") + `
-      <a class="menu-return" href="${backLink}">
-        <span>Retour page précédente</span>
-      </a>`;
+  if (isBreakfastCategory) {
+    const breakfastFormulas = [
+      {
+        name: "Simple",
+        price: "5 000",
+        items: ["Pain", "Omelette nature", "Café ou lait ou thé", "Sucre", "Miel", "Micro beurre ou micro confiture", "Assiette de fruit"],
+      },
+      {
+        name: "Majeo",
+        price: "8 000",
+        items: ["Pain", "Croissant", "Omelette garnie", "Café ou lait ou thé", "Miel", "Micro beurre ou micro confiture", "Fromage", "Assiette de fruit"],
+      },
+      {
+        name: "Complet",
+        price: "10 000",
+        items: ["Pain", "Croissant", "Omelette garnie", "Macédoine de légumes", "Café ou lait ou thé", "Miel", "Micro beurre ou micro confiture", "Fromage", "Assiette de fruit", "Jus de fruit"],
+      },
+    ];
+
+    list.innerHTML = `<div class="breakfast-grid">${breakfastFormulas
+      .map(
+        (formula) => `
+          <article class="breakfast-card">
+            <div class="breakfast-card-header">
+              <h2>${formula.name}</h2>
+              <p class="breakfast-price"><strong>${formula.price}</strong><span>FCFA</span></p>
+            </div>
+            <ul>${formula.items.map((item) => `<li>${item}</li>`).join("")}</ul>
+          </article>`
+      )
+      .join("")}</div>`;
+  } else if (items.length === 0) {
+    list.innerHTML = `<p class="empty-state">Rien dans cette catégorie pour le moment.</p>`;
+    return;
+  } else {
+    list.innerHTML = items
+      .map(
+        (d) => `
+        <div class="dish-row">
+          <span class="name">${d.nom}</span>
+          <span class="leader"></span>
+          <span class="price">${d.prix}</span>
+        </div>`
+      )
+      .join("");
+  }
+
+  list.innerHTML += `
+    <a class="menu-return" href="${backLink}">
+      <span>Retour page précédente</span>
+    </a>`;
 
   const backButton = list.querySelector(".menu-return");
   if (backButton) {

@@ -78,7 +78,7 @@ nav.topbar {
   box-shadow: 0 2px 10px rgba(22, 53, 127, 0.08);
 }
 
-body { padding-top: 111px; }
+body { padding-top: 140px; }
 html, body { overflow-x: hidden; }
 html.menu-open { overflow: hidden; }
 html { scrollbar-width: none; }
@@ -260,14 +260,11 @@ nav.topbar .links a:last-child:hover { background: var(--navy); }
     justify-self: end;
     width: min(100%, 420px);
 }
-/* ==========================================================
-   Tout ce qui suit = style d'ORIGINE, non retouché
-   (liste de plats, admin, formulaires, tableaux, footer...)
-   ========================================================== */
 
 /* --- Liste de plats (menu.html) --- */
 .menu-header {
   max-width: 980px;
+  padding: 0 1.75rem;
 }
 .menu-header h1 {
   font-size: clamp(2.6rem, 5vw, 4.8rem);
@@ -275,6 +272,7 @@ nav.topbar .links a:last-child:hover { background: var(--navy); }
   font-weight: 700;
   letter-spacing: -0.06em;
   color: var(--navy);
+  
 }
 .menu-list {
   max-width: 980px;
@@ -290,22 +288,22 @@ nav.topbar .links a:last-child:hover { background: var(--navy); }
   border-bottom: 1px solid rgba(23, 31, 41, 0.18);
 }
 .dish-row .name {
-  font-size: clamp(1.15rem, 2vw, 2.2rem);
+  font-size: clamp(1.25rem, 1.2vw, 1.125rem);
   color: var(--ink);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.25;
 }
 .dish-row .leader {
   flex: 1;
-  border-bottom: 2px dotted rgba(33, 35, 37, 0.26);
+  border-bottom: 2px dotted rgba(72, 72, 72, 0.26);
   transform: translateY(-3px);
 }
 .dish-row .price {
-  font-weight: 600;
+  font-weight: 500;
   color: #d16a35;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
-  font-size: clamp(1.1rem, 1.8vw, 2rem);
+  font-size: clamp(1.4rem, 1.8vw, 1.5rem);
   line-height: 1.2;
 }
 
@@ -750,4 +748,101 @@ footer.site-footer { text-align: center; padding: 2rem; color: var(--ink-soft); 
   .category-page .hero h1 { font-size: 2.4rem; }
   .category-page .category-grid { width: calc(100% - 2rem); max-width: none; }
   .category-page .category-card .name { font-size: 1.2rem; }
+}
+
+/* --- Formules petit-déjeuner --- */
+.breakfast-page .menu-header,
+.breakfast-page .menu-list {
+  max-width: 1050px;
+}
+
+.breakfast-page .menu-header h1 {
+  color: var(--primary-color);
+  font-weight: 700;
+  letter-spacing: 0;
+  padding-bottom: 1.25rem;
+}
+
+.breakfast-page .breakfast-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.6rem;
+}
+
+.breakfast-page .breakfast-card {
+  min-height: 356px;
+  padding: 1.35rem 1.4rem;
+  border: 1px solid var(--primary-color);;
+  border-radius: 12px;
+  background: var(--white);
+  box-shadow: 0 5px 14px rgba(36, 31, 25, 0.16);
+}
+
+.breakfast-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--primary-color);;
+  color: var(--primary-color);;
+}
+
+.breakfast-card-header h2 {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1.65rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.breakfast-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.1rem;
+  margin: 0;
+  white-space: nowrap;
+  color: var(--primary-color);;
+}
+
+.breakfast-price strong {
+  font-size: 1.65rem;
+  line-height: 1.2;
+}
+
+.breakfast-price span {
+  font-size: 0.65rem;
+}
+
+.breakfast-card ul {
+  display: grid;
+  gap: 0.85rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breakfast-card li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  color: #171717;
+  font-size: 1.1rem;
+}
+
+.breakfast-card li::before {
+  content: "✓";
+  flex: 0 0 auto;
+  color: var(--primary-color);
+}
+
+@media (max-width: 900px) {
+  .breakfast-page .breakfast-grid {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+
+  .breakfast-page .breakfast-card {
+    width: 100%;
+    max-width: 420px;
+  }
 }
